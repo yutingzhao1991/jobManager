@@ -1,0 +1,26 @@
+{
+  "name": "jobManager",
+  "version": "1.0.0",
+  "description": "Manager and monitor your linux shell jobs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node builder/index.js && node monitor/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yutingzhao1991/jobManager.git"
+  },
+  "keywords": [
+    "jobs",
+    "manager",
+    "monitor",
+    "shell"
+  ],
+  "author": "yutingzhao.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yutingzhao1991/jobManager/issues"
+  },
+  "homepage": "https://github.com/yutingzhao1991/jobManager"
+}

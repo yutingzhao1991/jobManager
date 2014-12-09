@@ -1,0 +1,13 @@
+{
+    "frequency": "quarterly", // value in (quarterly, hourly, daily, weekly, monthly)
+    "dependencies": [{
+        "job": "demo.b",
+        "frequency": "quarterly"
+    }],
+    "tasks": [{
+        "plugin": "base",
+        "config": {
+            "command": "echo \"test demo a\""
+        }
+    }]
+}
