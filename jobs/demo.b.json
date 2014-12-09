@@ -1,5 +1,5 @@
 {
-    "frequency": "quarterly", // value in (quarterly, hourly, daily, weekly, monthly)
+    "frequency": "quarterly",
     "dependencies": [],
     "tasks": [{
         "plugin": "base",

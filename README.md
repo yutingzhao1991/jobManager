@@ -30,6 +30,25 @@ Usage:
 5:Then you can visitor 127.0.0.1:[port] to manager your jobs.
 
 
+Job config:
+-------
+
+```
+{
+    "frequency": "quarterly", // // value in (quarterly, hourly, daily, weekly, monthly)
+    "dependencies": [{
+        "job": "demo.b",
+        "frequency": "quarterly"
+    }],
+    "tasks": [{
+        "plugin": "base",
+        "config": {
+            "command": "echo \"test demo a\""
+        }
+    }]
+}
+```
+
 Tips:
 ------
 You can write your own plugin to make your work more efficient.
