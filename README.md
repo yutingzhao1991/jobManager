@@ -11,6 +11,8 @@ Dependencies:
 
 - NodeJS
 
+- MongoDB
+
 - Shell Command : date, kill ...
 
 
@@ -18,6 +20,8 @@ Usage:
 ------
 
 1:Run 'npm install' to install necessary NodeJS packages.
+
+2:Modify config.js to configurate your MongoDB setting.
 
 2:Writing your own job config in jobs folder refer to demo config demo.a.json, json file name is your job name.
 
