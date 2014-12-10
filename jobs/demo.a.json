@@ -1,5 +1,6 @@
 {
     "frequency": "quarterly",
+    "authro": "Tingzhao Yu",
     "dependencies": [{
         "job": "demo.b",
         "frequency": "quarterly"
@@ -8,6 +9,11 @@
         "plugin": "python",
         "config": {
             "file": "src/demo.a/test.py"
+        }
+    }, {
+        "plugin": "base",
+        "config": {
+            "command": "echo \"i am a base task of demo a\""
         }
     }]
 }

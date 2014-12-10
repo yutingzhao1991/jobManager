@@ -1,11 +1,12 @@
 
-source ./resources/bi_job_templates.sh
+source ./resources/common_shell.sh
 
 # Variables need to fill when running this shell
-PARTITION=
-DATE=
-HOUR=
-QUARTER=
+DATE=$1
+HOUR=$2
+QUARTER=$3
 
 JOB_NAME="{job_name}"
 JOB_COMMAND_LIST="{job_command_list}"
+
+ExecuteJob

@@ -4,7 +4,7 @@
     "tasks": [{
         "plugin": "base",
         "config": {
-            "command": "echo \"test demo b\""
+            "command": "echo \"test demo b DATE:$DATE\""
         }
     }]
 }
