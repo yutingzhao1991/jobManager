@@ -9,6 +9,9 @@ exports.getAllJobsConfig = function (callback) {
         } else {
             for (var i = 0; i < files.length; i ++) {
                 var fileName = files[i]
+                if (!/\.json$/.test(fileName)) {
+                    continue
+                }
                 var jobName = fileName.replace(/\.json$/, '')
                 jobs.push({
                     jobName: jobName,

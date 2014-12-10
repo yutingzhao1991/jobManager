@@ -5,9 +5,9 @@
         "frequency": "quarterly"
     }],
     "tasks": [{
-        "plugin": "base",
+        "plugin": "python",
         "config": {
-            "command": "echo \"test demo a\""
+            "file": "src/demo.a/test.py"
         }
     }]
 }

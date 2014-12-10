@@ -25,7 +25,9 @@ Usage:
 
 2:Writing your own job config in jobs folder refer to demo config demo.a.json, json file name is your job name.
 
-4:Run 'npm start' to init jobs and start up monitor (or use node builder/index.js && node monitor/index.js).
+3:Run sh build.sh to init jobs.
+
+4:Run 'npm start' start up monitor (or use node monitor/index.js).
 
 5:Then you can visitor 127.0.0.1:[port] to manager your jobs.
 
@@ -52,6 +54,16 @@ Job config:
 Tips:
 ------
 You can write your own plugin to make your work more efficient.
+
+Variable in your shell command can be used:
+
+1.$DATE
+
+2.$HOUR
+
+3.$QUARTER
+
+...
 
 
 *Welcome to contribute your code*
