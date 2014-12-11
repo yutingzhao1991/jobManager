@@ -1,5 +1,6 @@
 {
     "frequency": "quarterly",
+    "author": "Tingzhao Yu",
     "dependencies": [],
     "tasks": [{
         "plugin": "base",

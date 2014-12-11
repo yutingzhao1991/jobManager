@@ -8,11 +8,19 @@ JOB_COMMAND_LIST=
 
 COMMAND_SEPARATOR=";"
 
+function time_echo {
+    echo `date "+[%Y-%m-%d %H:%M:%S] "`"$@"
+}
+
 function ExecuteJob() {
 
     local _DEPENDENT_JOB_WAIT_INTERVAL=600
 
-    echo "==== Start building $JOB_NAME of $PARTITION ===="
+    time_echo "==== Start building $JOB_NAME of $PARTITION ===="
+    time_echo "{{JOB_NAME::$JOB_NAME}}"
+    time_echo "{{PID::$$}}"
+    time_echo "{{PARTITION::$PARTITION}}"
+    time_echo "{{JOB::START}}"
 
     # Start run all command
     local _OLD_IFS=$IFS
@@ -20,14 +28,19 @@ function ExecuteJob() {
     for i in $JOB_COMMAND_LIST
     do
         local _CMD="$i"
+        time_echo "{{TASK::START::$_CMD}}"
         eval $_CMD
         if [ $? -eq 0 ]; then
-            echo "Success to run command: '$_CMD'."
+            time_echo "{{TASK::SUCCESS::$_CMD}}"
+            time_echo "Success to run command: '$_CMD'."
         else
-            echo "Failed to run command: '$_CMD'."
+            time_echo "{{TASK::FAILED::$_CMD}}"
+            time_echo "Failed to run command: '$_CMD'."
+            time_echo "{{JOB::FAILED}}"
             exit 1
         fi
     done
+    time_echo "{{JOB::SUCCESS}}"
     IFS=$_OLD_IFS
 
 }

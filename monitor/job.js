@@ -1,4 +1,5 @@
 var config = require('../config.json')
+var utils = require('../common/utils')
 var mongoose = require('mongoose')
 
 mongoose.connect(config.db, function (err) {
@@ -9,7 +10,6 @@ mongoose.connect(config.db, function (err) {
 });
 require('./model/job.js')
 var Job = mongoose.model('Job')
-var utils = require('../common/utils')
 
 var initJob = function (jobInfo) {
     Job.findOne({
@@ -28,7 +28,7 @@ var initJob = function (jobInfo) {
         if (jobInfo.config) {
             newJob.frequency = jobInfo.config.frequency
             newJob.author = jobInfo.config.author
-            newJob.status = 'dead'
+            newJob.status = 'stop'
         }
         newJob.save(function (err) {
             if (err) {
@@ -38,7 +38,9 @@ var initJob = function (jobInfo) {
     })
 }
 
-exports.init = function () {
+
+var init = function () {
+    console.log('init jobs')
     utils.getAllJobsConfig(function (jobs) {
         for (var i = 0; i < jobs.length; i ++) {
             initJob(jobs[i])
@@ -46,8 +48,20 @@ exports.init = function () {
     })
 }
 
+init()
+
+exports.getJob = function (jobName, callback) {
+    Job.findOne({ name: jobName }, function (err, job) {
+        if (err) {
+            console.error(err)
+            callback(null)
+            return
+        }
+        callback(job)
+    })
+}
+
 exports.getAllJobs = function (callback) {
-    console.log('init jobs')
     Job.find({}, function (err, jobs) {
         if (err) {
             console.error(err)

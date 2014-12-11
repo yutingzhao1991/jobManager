@@ -1,6 +1,6 @@
 {
     "frequency": "quarterly",
-    "authro": "Tingzhao Yu",
+    "author": "Tingzhao Yu",
     "dependencies": [{
         "job": "demo.b",
         "frequency": "quarterly"

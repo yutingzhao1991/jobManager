@@ -6,8 +6,8 @@ var JobSchema = new Schema({
     name: { type: String, index: true},
     pid: {type: String},
     start_time: { type: Date, default: Date.now },
-    current_partition: { type: Date, default: Date.now },
-    frequency: { type: String },
+    current_partition_time: { type: Date, default: Date.now },
+    frequency: { type: String }, // 'daily' | 'hourly' ...
     latency: { type: Number, default: 0 },
     average_latency: { type: Number, default: 0 },
     average_processing_time: { type: Number, default: 0 },
