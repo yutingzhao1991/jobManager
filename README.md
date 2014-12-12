@@ -57,13 +57,29 @@ You can write your own plugin to make your work more efficient.
 
 Variable in your shell command can be used:
 
-1.$DATE
+1.$PARTITION
 
-2.$HOUR
-
-3.$QUARTER
+2.... TODO
 
 ...
+
+
+TODO:
+------
+
+- Delay email alert
+
+- Support more frequency type
+
+- Job dead check
+
+- Fix bugs
+
+- Support view log in monitor
+
+- backup log logs
+
+- JS callback optimization
 
 
 *Welcome to contribute your code*

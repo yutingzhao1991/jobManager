@@ -110,13 +110,13 @@ var updateStatus = function () {
 var shouldStartJob = function(job, jobsMap) {
     console.log('check job ', job.name)
     if (job.status != 'waiting' && job.status != 'success') {
-        console.log('status false')
+        //console.log('status false')
         return false
     }
     var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
     var nowPartition = utils.getPartitionByTime(job.frequency, new Date())
     if (partition >= nowPartition) {
-        console.log('now partition false')
+        //console.log('now partition false')
         return false
     }
     if (!jobsConfig[job.name]) {
