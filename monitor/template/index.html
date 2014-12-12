@@ -35,16 +35,21 @@
             <% jobs.forEach(function(job){ %>
             <tr>
               <td><%= job.name %></td>
-              <td><%= job.current_partition %></td>
+              <td><%= job.current_partition_time %></td>
               <td><%= job.latency %></td>
               <td><%= job.average_processing_time %></td>
               <td><%= job.average_latency %></td>
               <td><%= job.status %></td>
-              <td><%= job.pid %></td>
+              <td><%= job.pid || 'N/A' %></td>
               <td><%= job.frequency %></td>
               <td><%= job.start_time %></td>
               <td><%= job.author %></td>
-              <td><a class="btn btn-primary" href="/start?job_name=<%= job.name %>">Start</a></td>
+              <td>
+                <div>
+                  <a class="btn btn-primary btn-xs" href="/start?job_name=<%= job.name %>">Start</a>
+                  <a class="btn btn-danger btn-xs" href="/stop?job_name=<%= job.name %>">Stop</a>
+                </div>
+              </td>
             </tr>
             <% }) %>
           </tbody>

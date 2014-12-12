@@ -41,22 +41,33 @@ app.get('/start', function (req, res) {
             res.end('no such job')
             return
         }
-        var partitionTime = null
-        if (!startPartition) {
-            partitionTime = new Date()
-        } else {
-            partitionTime = utils.getTimeByPartition(job.frequency, startPartition)
+        if (job.status == 'stop' || job.status == 'error' || job.status == 'failed') {
+            job.status = 'waiting'
+            job.start_time = new Date()
+            if (startPartition) {
+                job.current_partition_time = utils.getTimeByPartition(startPartition)
+            } else {
+                // start from 3 hours ago
+                job.current_partition_time = new Date(Date.now() - 1000 * 60 * 60 * 3)
+            }
+            job.save()
         }
-        operation.startJob(job, partitionTime)
-        res.send('start')
+        res.redirect('/')
     })
 })
 
 app.get('/stop', function (req, res) {
     var jobName = req.query.job_name
-    var startPartition = req.query.partition
-    console.log('start job: ', jobName, ' partition', startPartition)
-    res.send('start')
+    job.getJob(jobName, function (job) {
+        if (!job) {
+            res.end('no such job')
+            return
+        }
+        operation.killJob(jobName)
+        job.status = 'stop'
+        job.save()
+        res.redirect('/')
+    })
 })
 
 app.listen(config.port)

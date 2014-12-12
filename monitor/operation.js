@@ -8,6 +8,7 @@ exports.init = function () {
 
 exports.startJob = function (job, partitionTime) {
     var partition = utils.getPartitionByTime(job.frequency, partitionTime)
+    console.log('start new partition of job ', job.name, ' partition: ', partition)
     var sh = spawn('sh', [__dirname + '/start.sh', job.name, partition])
     sh.stdout.on('data', function (data) {
         console.log(data)

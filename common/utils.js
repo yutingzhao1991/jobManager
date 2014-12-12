@@ -40,7 +40,7 @@ exports.getTimeByPartition = function (frequncy, patition) {
     }
 }
 
-exports.getPartitionByTime = function (frequncy, time) {
+var getPartitionByTime = function (frequncy, time) {
     switch(frequncy) {
         case 'monthly':
             return moment(time).format('YYYY/MM')
@@ -51,4 +51,25 @@ exports.getPartitionByTime = function (frequncy, time) {
         case 'quarterly':
             return moment(time).format('YYYY/MM/DD/HH') + '/' + Math.floor(time.getMinutes() / 15)
     }
+}
+
+exports.getPartitionByTime = getPartitionByTime
+
+exports.getNextPartitionTimeByTime = function (frequncy, time) {
+    var nextPatitionTime = moment(time)
+    switch(frequncy) {
+        case 'monthly':
+            nextPatitionTime.add(1, 'months')
+            break
+        case 'daily':
+            nextPatitionTime.add(1, 'days')
+            break
+        case 'hourly':
+            nextPatitionTime.add(1, 'hours')
+            break
+        case 'quarterly':
+            nextPatitionTime.add(15, 'minutes')
+            break
+    }
+    return nextPatitionTime.toDate()
 }

@@ -27,7 +27,7 @@ Usage:
 
 3:Run sh build.sh to init jobs.
 
-4:Run 'npm start' start up monitor (or use node monitor/index.js).
+4:Run node monitor/bk_index.js to start backend log scaner and run node monitor/fe_index.js to start monitor web server.
 
 5:Then you can visitor 127.0.0.1:[port] to manager your jobs.
 

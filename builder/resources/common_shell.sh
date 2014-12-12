@@ -28,13 +28,11 @@ function ExecuteJob() {
     for i in $JOB_COMMAND_LIST
     do
         local _CMD="$i"
-        time_echo "{{TASK::START::$_CMD}}"
         eval $_CMD
         if [ $? -eq 0 ]; then
-            time_echo "{{TASK::SUCCESS::$_CMD}}"
             time_echo "Success to run command: '$_CMD'."
         else
-            time_echo "{{TASK::FAILED::$_CMD}}"
+            time_echo "{{FAILED_TASK::$_CMD}}"
             time_echo "Failed to run command: '$_CMD'."
             time_echo "{{JOB::FAILED}}"
             exit 1

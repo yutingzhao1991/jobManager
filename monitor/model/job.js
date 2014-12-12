@@ -12,7 +12,8 @@ var JobSchema = new Schema({
     average_latency: { type: Number, default: 0 },
     average_processing_time: { type: Number, default: 0 },
     author: { type: String },
-    status: {type: String }
+    status: {type: String },
+    message: {type: String }
 });
 
 mongoose.model('Job', JobSchema);
