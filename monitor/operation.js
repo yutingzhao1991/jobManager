@@ -1,6 +1,7 @@
 
 var spawn = require('child_process').spawn
 var utils = require('../common/utils')
+var moment = require('moment')
 
 exports.init = function () {
 
@@ -9,7 +10,10 @@ exports.init = function () {
 exports.startJob = function (job, partitionTime) {
     var partition = utils.getPartitionByTime(job.frequency, partitionTime)
     console.log('start new partition of job ', job.name, ' partition: ', partition)
-    var sh = spawn('sh', [__dirname + '/start.sh', job.name, partition])
+    var sh = spawn('sh', [__dirname + '/start.sh',
+        job.name,
+        partition,
+        moment(partitionTime).format('YYYY-MM-DD')])
     sh.stdout.on('data', function (data) {
         console.log(data)
     })

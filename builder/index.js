@@ -36,8 +36,10 @@ var buildJob = function (jobName, config) {
     })
 }
 
-utils.getAllJobsConfig(function (jobs) {
+utils.getAllJobsConfig().then(function (jobs) {
     for (var i = 0; i < jobs.length; i ++) {
         buildJob(jobs[i].jobName, jobs[i].config)
     }
+}, function (err) {
+    console.log(err)
 })

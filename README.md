@@ -1,4 +1,4 @@
-jobManager (DOING)
+jobManager
 ==========
 
 A program to manager and monitor your linux shell jobs, based on NodeJS.
@@ -57,11 +57,9 @@ You can write your own plugin to make your work more efficient.
 
 Variable in your shell command can be used:
 
-1.$PARTITION
+1.$PARTITION # like 2014/12/12/12/2
 
-2.... TODO
-
-...
+2.$DATE # like 2014-12-12
 
 
 TODO:
@@ -69,17 +67,13 @@ TODO:
 
 - Delay email alert
 
-- Support more frequency type
-
-- Job dead check
-
-- Fix bugs
+- Support more frequency type, maybe strong like crontab
 
 - Support view log in monitor
 
-- backup log logs
+- frontend page auto update
 
-- JS callback optimization
+- delay time display
 
 
 *Welcome to contribute your code*

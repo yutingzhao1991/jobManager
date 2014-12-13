@@ -15,6 +15,7 @@ function time_echo {
 function ExecuteJob() {
 
     local _DEPENDENT_JOB_WAIT_INTERVAL=600
+    local _START_TIME=`date +%s`
 
     time_echo "==== Start building $JOB_NAME of $PARTITION ===="
     time_echo "{{JOB_NAME::$JOB_NAME}}"
@@ -38,6 +39,9 @@ function ExecuteJob() {
             exit 1
         fi
     done
+    local _END_TIME=`date +%s`
+    _PROCESSING_TIME=`expr $_END_TIME - $_START_TIME`
+    time_echo "{{PROCESSING_TIME::$_PROCESSING_TIME}}"
     time_echo "{{JOB::SUCCESS}}"
     IFS=$_OLD_IFS
 

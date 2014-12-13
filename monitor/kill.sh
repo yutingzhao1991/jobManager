@@ -1,3 +1,6 @@
+# This is a shell command file to kill a job.
+# Usage: sh kill.sh JOB_NAME
+
 cd _jobs
 # $1 is the job name
 _JOB_NAME=$1

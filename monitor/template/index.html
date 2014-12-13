@@ -1,63 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Job Monitor</title>
-  <link type="text/css" rel="stylesheet" media="all" href="public/bootstrap/css/bootstrap.min.css">
-</head>
-<body>
-  <div class="container-fluid">
-    <h1>Jobs Monitor</h1>
-    <div class="row">
-      <div class="col-md-12">
-        <b>Totol Count:</b> <%= jobs.length %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>current_partition</th>
-              <th>latency</th>
-              <th>average processing time</th>
-              <th>average latency</th>
-              <th>current_status</th>
-              <th>pid</th>
-              <th>frequency</th>
-              <th>start_time</th>
-              <th>author</th>
-              <th>command</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% jobs.forEach(function(job){ %>
-            <tr>
-              <td><%= job.name %></td>
-              <td><%= job.current_partition_time %></td>
-              <td><%= job.latency %></td>
-              <td><%= job.average_processing_time %></td>
-              <td><%= job.average_latency %></td>
-              <td><%= job.status %></td>
-              <td><%= job.pid || 'N/A' %></td>
-              <td><%= job.frequency %></td>
-              <td><%= job.start_time %></td>
-              <td><%= job.author %></td>
-              <td>
-                <div>
-                  <a class="btn btn-primary btn-xs" href="/start?job_name=<%= job.name %>">Start</a>
-                  <a class="btn btn-danger btn-xs" href="/stop?job_name=<%= job.name %>">Stop</a>
-                </div>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<% layout('layout') -%>
+
+<h1>Jobs Monitor</h1>
+<div class="row">
+  <div class="col-md-12">
+    <b>Totol Count:</b> <%= jobs.length %>
   </div>
-  <script src="public/jquery.min.js"></script>
-  <script src="public/bootstrap/js/bootstrap.min.js"></script>
-</body>
-</html>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>current_partition</th>
+          <th>latency</th>
+          <th>average processing time</th>
+          <th>average latency</th>
+          <th>current_status</th>
+          <th>pid</th>
+          <th>frequency</th>
+          <th>start_time</th>
+          <th>author</th>
+          <th>command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% jobs.forEach(function(job){ %>
+        <tr>
+          <td><%= job.name %></td>
+          <td><%= partition(job.frequency, job.current_partition_time) %></td>
+          <td><%= formatDuration(job.latency) %></td>
+          <td><%= formatDuration(job.average_processing_time) %></td>
+          <td><%= formatDuration(job.average_latency) %></td>
+          <td><%= job.status %></td>
+          <td><%= job.pid || 'N/A' %></td>
+          <td><%= job.frequency %></td>
+          <td><%= formatTime(job.start_time) %></td>
+          <td><%= job.author %></td>
+          <td>
+            <div>
+              <button class="btn btn-primary btn-xs jm-start" data-partition="<%= partition(job.frequency, job.current_partition_time) %>" data-name="<%= job.name %>">Start</button>
+              <a class="btn btn-danger btn-xs" href="/stop?job_name=<%= job.name %>">Stop</a>
+            </div>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

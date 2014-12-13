@@ -2,8 +2,7 @@
     "frequency": "quarterly",
     "author": "Tingzhao Yu",
     "dependencies": [{
-        "job": "demo.b",
-        "frequency": "quarterly"
+        "job": "demo.b"
     }],
     "tasks": [{
         "plugin": "python",
