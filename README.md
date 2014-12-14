@@ -43,8 +43,8 @@ Job config:
     }],
     "tasks": [{
         "plugin": "base",
-        "retry": "false", // is auto retry, default is false 
-        "config": {
+        "retry": "false", // is auto retry, default is false, is it is true job this task will retry untill success
+        "config": { // you can get this config in you plugin
             "command": "echo \"test demo a\""
         }
     }]
@@ -89,6 +89,22 @@ Change Log:
 
 - 0.0.2 : support email alert and auto retry task
 
+- 0.0.3 : support view log
+
+
+Plugin:
+--------
+
+Every job is a set of tasks, each task is build with a plugin.
+
+You can write your won plugin to manager your code.
+
+Write plugin in folder plugins, each plugin in a independent folder and include a nodeJS file index.js.
+
+Your plugin module will get the config witch define in your job config json file, and you should retrun a command string.
+
+Manager will run all task of your job one by one.
+
 
 TODO:
 ------
@@ -96,11 +112,15 @@ TODO:
 
 - Support more frequency type, maybe strong like crontab
 
-- Support view log in monitor
-
 - frontend page auto update
 
 - delay time display
+
+- program log optimization
+
+- handle kill job faild, aviod two same job running
+
+- Handle job's status better.
 
 
 *Welcome to contribute your code*

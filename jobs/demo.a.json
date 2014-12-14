@@ -8,7 +8,7 @@
         "plugin": "base",
         "retry": "true",
         "config": {
-            "command": "test \"`date \"+%S\"`\" -gt \"30\""
+            "command": "test \"`date \"+%M\"`\" -gt \"03\""
         }
     }, {
         "plugin": "python",

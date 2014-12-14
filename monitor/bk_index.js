@@ -182,16 +182,11 @@ var checkJobs = function () {
             var ps = []
             for (var i = 0; i < jobs.length; i ++) {
                 job = jobs[i]
-                if (job.status == 'stop') {
-                    continue
-                }
                 if (shouldStartJob(job, jobsMap)) {
                     operation.startJob(job, job.current_partition_time)
                     job.status = 'processing'
-                } else {
-                    job.status = 'waiting'
+                    ps.push(jobUtil.saveJob(job))
                 }
-                ps.push(jobUtil.saveJob(job))
             }
             when.all(ps).then(function () {
                 resolve(jobs)

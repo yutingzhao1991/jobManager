@@ -14,6 +14,7 @@ var operation = require('./operation')
 var utils = require('../common/utils')
 var when = require('when')
 var moment = require('moment')
+var fs = require('fs')
 
 // static files forder
 var staticDir = path.join(__dirname, 'public');
@@ -82,10 +83,24 @@ app.get('/stop', function (req, res) {
         jobUtil.saveJob(job).then(function () {
             res.redirect('/')
         }, function () {
-            res.render('error', err)
+            res.redirect('error?msg=' + err)
         })
     }, function (err) {
         res.redirect('error?msg=' + err)
+    })
+})
+
+app.get('/log', function (req, res) {
+    var jobName = req.query.job_name
+    fs.readFile(__dirname + '/../_jobs/' + jobName + '.log', function (err, data) {
+        if (err) {
+            res.redirect('error?msg=' + err)
+            return
+        }
+        res.render('log', {
+            job_name: jobName,
+            log: "" + data
+        })
     })
 })
 

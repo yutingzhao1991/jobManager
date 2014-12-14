@@ -19,7 +19,7 @@ exports.startJob = function (job, partitionTime) {
     })
 
     sh.stderr.on('data', function (data) {
-        // console.error('start job error: ' + data);
+        console.error('start job error: ' + data);
     })
 
     sh.on('close', function (code) {
@@ -32,7 +32,7 @@ exports.startJob = function (job, partitionTime) {
 exports.killJob = function (jobName) {
     var sh = spawn('sh', [__dirname + '/kill.sh', jobName])
     sh.stdout.on('data', function (data) {
-        console.log(data)
+        //console.log(data)
     })
 
     sh.stderr.on('data', function (data) {
