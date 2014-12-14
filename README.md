@@ -43,6 +43,7 @@ Job config:
     }],
     "tasks": [{
         "plugin": "base",
+        "retry": "false", // is auto retry, default is false 
         "config": {
             "command": "echo \"test demo a\""
         }
@@ -82,10 +83,16 @@ Variable in your shell command can be used:
 2.$DATE # like 2014-12-12
 
 
+Change Log:
+
+- 0.0.1 : first version release
+
+- 0.0.2 : support email alert and auto retry task
+
+
 TODO:
 ------
 
-- Delay email alert
 
 - Support more frequency type, maybe strong like crontab
 

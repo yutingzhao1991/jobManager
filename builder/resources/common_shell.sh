@@ -12,6 +12,41 @@ function time_echo {
     echo `date "+[%Y-%m-%d %H:%M:%S] "`"$@"
 }
 
+function RunCommandUntilSuccess() {
+    if [ $# -lt 1 ] || [ $# -gt 3 ]; then
+        echo "Usage: RunCommandUntilSuccess command failure_retry_interval_secs error_msg"
+        return 1
+    fi
+
+    local _CMD=$1
+
+    local _RETRY_INTERVAL=60
+    if [ $# -ge 2 ]; then
+        _RETRY_INTERVAL=$2
+    fi
+
+    local _ERROR_MSG=
+    if [ $# -ge 3 ]; then
+        _ERROR_MSG=$3
+    fi
+
+    while :
+    do
+        eval $_CMD
+
+        if [ $? -eq 0 ]; then
+            break
+        else
+            if [ $_ERROR_MSG ]; then
+                echo "$_ERROR_MSG"
+            fi
+
+            echo `date +%Y-%m-%d-%T`" Failed to run command: '$_CMD'. Retry in $_RETRY_INTERVAL seconds."
+            sleep $_RETRY_INTERVAL
+        fi
+    done
+}
+
 function ExecuteJob() {
 
     local _DEPENDENT_JOB_WAIT_INTERVAL=600
@@ -25,11 +60,18 @@ function ExecuteJob() {
 
     # Start run all command
     local _OLD_IFS=$IFS
+    local _INDEX="0"
     IFS=$COMMAND_SEPARATOR
     for i in $JOB_COMMAND_LIST
     do
         local _CMD="$i"
-        eval $_CMD
+        local _RETRY_FLAG="${JOB_COMMAND_LIST_RETRY_FLAG[$_INDEX]}"
+        _INDEX=`expr $_INDEX + 1`
+        if [ "$_RETRY_FLAG" = "true" ]; then
+            RunCommandUntilSuccess $_CMD
+        else
+            eval $_CMD
+        fi
         if [ $? -eq 0 ]; then
             time_echo "Success to run command: '$_CMD'."
         else

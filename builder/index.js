@@ -18,17 +18,21 @@ var buildJob = function (jobName, config) {
     console.log('start build job : ', jobName, ' with config ', JSON.stringify(config))
     var tasks = config.tasks
     var jobCommandList = [], task, command
+    var jobCommandListRetryFlag = []
     for (var i = 0; i < tasks.length; i ++) {
         task = tasks[i]
         command = require('../plugins/' + task.plugin)(task.config)
         console.log(command)
         if (command) {
             jobCommandList.push(command)
+            task.retry = task.retry || 'false'
+            jobCommandListRetryFlag.push('"' + task.retry + '"')
         }
     }
     var jobShell = JOB_TEMPLATE
         .replace('{job_name}', jobName)
         .replace('{job_command_list}', jobCommandList.join(';').replace(/\"/g, '\\\"'))
+        .replace('{job_command_list_retry_flag}', '(' + jobCommandListRetryFlag.join(' ') + ')')
     fs.writeFile(__dirname + '/../_jobs/' + jobName + '.sh', jobShell, function (err) {
         if (err) {
             console.error('write job ', jobName, ' failed. ', err)

@@ -5,14 +5,15 @@
         "job": "demo.b"
     }],
     "tasks": [{
+        "plugin": "base",
+        "retry": "true",
+        "config": {
+            "command": "test \"`date \"+%S\"`\" -gt \"30\""
+        }
+    }, {
         "plugin": "python",
         "config": {
             "file": "src/demo.a/test.py"
-        }
-    }, {
-        "plugin": "base",
-        "config": {
-            "command": "echo \"i am a base task of demo a\""
         }
     }]
 }
