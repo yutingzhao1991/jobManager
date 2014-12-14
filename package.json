@@ -1,6 +1,6 @@
 {
   "name": "jobManager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manager and monitor your linux shell jobs.",
   "main": "index.js",
   "scripts": {
@@ -24,10 +24,13 @@
   },
   "homepage": "https://github.com/yutingzhao1991/jobManager",
   "dependencies": {
+    "ejs": "^1.0.0",
     "ejs-mate": "^2.1.0",
     "express": "^4.10.4",
     "moment": "^2.8.4",
     "mongoose": "^3.8.20",
+    "nodemailer": "^1.3.0",
+    "nodemailer-smtp-transport": "^0.1.13",
     "when": "~3.6.3"
   }
 }

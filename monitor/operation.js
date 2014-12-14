@@ -15,11 +15,11 @@ exports.startJob = function (job, partitionTime) {
         partition,
         moment(partitionTime).format('YYYY-MM-DD')])
     sh.stdout.on('data', function (data) {
-        console.log(data)
+        // console.log(data)
     })
 
     sh.stderr.on('data', function (data) {
-        console.error('start job error: ' + data);
+        // console.error('start job error: ' + data);
     })
 
     sh.on('close', function (code) {

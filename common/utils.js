@@ -30,11 +30,11 @@ exports.getAllJobsConfig = function () {
 }
 
 exports.isPartitionLegal = function (frequency, partition) {
-    console.log(frequency)
-    console.log(partition)
     switch(frequency) {
         case 'monthly':
-            return /^\d\d\d\d\/\d\d$/.test(partition)
+            return /^\d\d\d\d\/\d\d\/\d\d$/.test(partition)
+        case 'weekly':
+            return /^\d\d\d\d\/\d\d\/\d\d$/.test(partition)
         case 'daily':
             return /^\d\d\d\d\/\d\d\/\d\d$/.test(partition)
         case 'hourly':
@@ -46,24 +46,37 @@ exports.isPartitionLegal = function (frequency, partition) {
 }
 
 exports.getTimeByPartition = function (frequency, partition) {
+    var time = null
     switch(frequency) {
         case 'monthly':
-            return moment(partition, 'YYYY/MM').toDate()
+            time = moment(partition, 'YYYY/MM/DD').endOf('month').toDate()
+            break
+        case 'weekly':
+            time = moment(partition, 'YYYY/MM/DD').endOf('week').toDate()
+            break
         case 'daily':
-            return moment(partition, 'YYYY/MM/DD').toDate()
+            time = moment(partition, 'YYYY/MM/DD').toDate()
+            break
         case 'hourly':
-            return moment(partition, 'YYYY/MM/DD/HH').toDate()
+            time = moment(partition, 'YYYY/MM/DD/HH').toDate()
+            break
         case 'quarterly':
             var p = partition.split('/')
             p[p.length - 1] = parseInt(p[p.length - 1]) * 15
-            return moment(p.join('/'), 'YYYY/MM/DD/HH/mm').toDate()
+            time = moment(p.join('/'), 'YYYY/MM/DD/HH/mm').toDate()
+            break
+        default:
+            time = new Date()
     }
+    return getPartitionTimeByTime(frequency, time)
 }
 
 var getPartitionByTime = function (frequency, time) {
     switch(frequency) {
         case 'monthly':
-            return moment(time).format('YYYY/MM')
+            return moment(time).endOf('month').format('YYYY/MM/DD')
+        case 'weekly':
+            return moment(time).endOf('week').format('YYYY/MM/DD')
         case 'daily':
             return moment(time).format('YYYY/MM/DD')
         case 'hourly':
@@ -75,11 +88,40 @@ var getPartitionByTime = function (frequency, time) {
 
 exports.getPartitionByTime = getPartitionByTime
 
+var getPartitionTimeByTime = function (frequency, time) {
+    var partitionTime = moment(time)
+    switch(frequency) {
+        case 'monthly':
+            partitionTime.endOf('month')
+            break
+        case 'weekly':
+            partitionTime.endOf('week')
+            break
+        case 'daily':
+            partitionTime.endOf('day')
+            break
+        case 'hourly':
+            partitionTime.endOf('hour')
+            break
+        case 'quarterly':
+            partitionTime.minutes(Math.ceil(partitionTime.minutes() / 15) * 15)
+            break
+    }
+    partitionTime.second(0)
+    partitionTime.milliseconds(0)
+    return partitionTime
+}
+
+exports.getPartitionTimeByTime = getPartitionTimeByTime
+
 exports.getNextPartitionTimeByTime = function (frequency, time) {
-    var nextPatitionTime = moment(time)
+    var nextPatitionTime = moment(getPartitionTimeByTime(frequency, time))
     switch(frequency) {
         case 'monthly':
             nextPatitionTime.add(1, 'months')
+            break
+        case 'weekly':
+            nextPatitionTime.add(1, 'weeks')
             break
         case 'daily':
             nextPatitionTime.add(1, 'days')
@@ -92,4 +134,20 @@ exports.getNextPartitionTimeByTime = function (frequency, time) {
             break
     }
     return nextPatitionTime.toDate()
+}
+
+//
+// duration is s
+// TODO: return like: 1 Days 2 Hours 30 Minutes
+//
+exports.humanDuration = function (duration) {
+    if (duration < 100) {
+        return duration + ' Sconds'
+    } else if (duration < 6000) {
+        return duration / 60 + ' Minutes'
+    } else if (duration < 36000) {
+        return duration / 60 / 60 + ' Hours'
+    } else {
+        return duration / 60 / 60 / 24 + ' Days'
+    }
 }

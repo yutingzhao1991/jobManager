@@ -30,15 +30,7 @@ app.get('/', function (req, res){
             formatTime: function (t) {
                 return moment(t).format('YYYY-MM-DD HH:mm:ss')
             },
-            formatDuration: function (t) {
-                if (t < 100) {
-                    return t + ' s'
-                } else if (t < 6000) {
-                    return t / 60 + ' m'
-                } else {
-                    return t / 60 / 60 + ' h'
-                }
-            }
+            formatDuration: utils.humanDuration
         })
     }, function (err) {
         res.redirect('error?msg=' + err)

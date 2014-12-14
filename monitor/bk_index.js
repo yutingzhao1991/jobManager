@@ -5,6 +5,8 @@ var jobUtil = require('./job')
 var utils = require('../common/utils')
 var operation = require('./operation')
 var when = require('when')
+var alerter = require('./alerter')
+var config = require('../config.json')
 
 var LAST_UPDATE_END = true
 var LOG_DIR = __dirname + '/../_jobs'
@@ -192,10 +194,10 @@ var checkJobs = function () {
                 ps.push(jobUtil.saveJob(job))
             }
             when.all(ps).then(function () {
-                resolve()
+                resolve(jobs)
             }, function (err) {
                 console.log(err)
-                resolve()
+                reject(err)
             })
         }, function (err) {
             reject(err)
@@ -207,7 +209,7 @@ var checkJobs = function () {
 var runBackendProcess = function () {
     console.log('run backend process')
     updateStatus().then(function () {
-        checkJobs().then(function () {
+        checkJobs().then(function (jobs) {
             setTimeout(function () {
                 runBackendProcess()
             }, 10000)
@@ -219,6 +221,10 @@ var runBackendProcess = function () {
         console.error('bk server update job status failed', err)
     })
 }
+
+setInterval(function () {
+    alerter.checkAndAlertJobs(jobs)
+}, config.alertInterval * 1000)
 
 when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {
     var jobs = result[1]
