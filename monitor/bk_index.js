@@ -218,7 +218,9 @@ var runBackendProcess = function () {
 }
 
 setInterval(function () {
-    alerter.checkAndAlertJobs(jobs)
+    jobUtil.getAllJobs().then(function (jobs) {
+        alerter.checkAndAlertJobs(jobs)
+    })
 }, config.alertInterval * 1000)
 
 when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {

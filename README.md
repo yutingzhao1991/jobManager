@@ -1,7 +1,12 @@
 jobManager
 ==========
 
-A program to manager and monitor your linux shell jobs, based on NodeJS.
+A program to manager and monitor your linux shell jobs ( In fact, your job is a shell command ), based on NodeJS.
+
+
+![monitor](https://cloud.githubusercontent.com/assets/1061968/5429930/c320770a-843a-11e4-8ca4-5c88bf25a978.png)
+
+![logviewer](https://cloud.githubusercontent.com/assets/1061968/5429922/afa34c16-843a-11e4-986e-b7f1154670f2.png)
 
 
 Dependencies:
@@ -120,7 +125,11 @@ TODO:
 
 - handle kill job faild, aviod two same job running
 
-- Handle job's status better.
+- Handle job's status better
+
+- Unit Test
+
+- Support end time
 
 
 *Welcome to contribute your code*

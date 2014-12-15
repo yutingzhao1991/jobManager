@@ -138,16 +138,7 @@ exports.getNextPartitionTimeByTime = function (frequency, time) {
 
 //
 // duration is s
-// TODO: return like: 1 Days 2 Hours 30 Minutes
 //
 exports.humanDuration = function (duration) {
-    if (duration < 100) {
-        return duration + ' Sconds'
-    } else if (duration < 6000) {
-        return duration / 60 + ' Minutes'
-    } else if (duration < 36000) {
-        return duration / 60 / 60 + ' Hours'
-    } else {
-        return duration / 60 / 60 / 24 + ' Days'
-    }
+    return moment.duration(duration, 'seconds').humanize()
 }
