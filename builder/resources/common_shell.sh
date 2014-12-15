@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author: Tingzhao Yu (yutingzhao@qiyi.com)
+# Author: Tingzhao Yu
 #
 
 JOB_NAME=

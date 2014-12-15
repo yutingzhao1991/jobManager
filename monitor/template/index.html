@@ -40,7 +40,7 @@
           <td>
             <div>
               <button class="btn btn-primary btn-xs jm-start" data-partition="<%= partition(job.frequency, job.current_partition_time) %>" data-name="<%= job.name %>">Start</button>
-              <a class="btn btn-danger btn-xs" href="/stop?job_name=<%= job.name %>">Stop</a>
+              <button class="btn btn-danger btn-xs jm-stop" data-name="<%= job.name %>">Stop</button>
               <a class="btn btn-default btn-xs" href="/log?job_name=<%= job.name %>">Log</a>
             </div>
           </td>

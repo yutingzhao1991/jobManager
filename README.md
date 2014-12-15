@@ -76,6 +76,22 @@ Project config:
 }
 ```
 
+Job status:
+
+- waiting : waiting dependencies job ready or bk_index start the job
+
+- progressing : running
+
+- success : success and waiting next partition
+
+- failed : ocurr error in job shell
+
+- error : ocurr error in monitor
+
+- dead : job dead when progressing
+
+- stop : stoped, nothing will happen with this job.
+
 
 Tips:
 ------

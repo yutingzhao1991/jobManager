@@ -40,8 +40,9 @@ var updateJob = function (jobName, detail) {
     console.log('update job ', jobName)
     var promise = when.promise(function (resolve, reject, notify) {
         jobUtil.getJob(jobName).then(function (job) {
-            if (job.status != 'processing') {
-                // job was waiting, did not need update
+            if (!job || job.status != 'processing') {
+                // job not exist or job was waiting, did not need update
+                // TODO: get all processiong job and then to read the logfile
                 resolve()
                 return
             }

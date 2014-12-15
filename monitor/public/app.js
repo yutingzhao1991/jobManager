@@ -7,4 +7,10 @@ $(function () {
             window.open('/start?job_name=' + name + '&partition=' + partition, '_self')
         }
     })
+    $('.jm-stop').click(function () {
+        var name = $(this).data('name')
+        if (confirm('Are you sure to stop job : ' + name)) {
+            window.open('/stop?job_name=' + name, '_self')
+        }
+    })
 })
