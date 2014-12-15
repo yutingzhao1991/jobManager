@@ -21,7 +21,7 @@ var buildJob = function (jobName, config) {
     var jobCommandListRetryFlag = []
     for (var i = 0; i < tasks.length; i ++) {
         task = tasks[i]
-        command = require('../plugins/' + task.plugin)(task.config)
+        command = require('../plugins/' + task.plugin)(jobName, config, task.config)
         console.log(command)
         if (command) {
             jobCommandList.push(command)

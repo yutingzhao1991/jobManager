@@ -1,9 +1,9 @@
 //
 // A base plugin for demo
-// config: {
+// taskConfig: {
 //  "command": "your shell command here"
 // }
 
-module.exports = function (config) {
-    return config.command
+module.exports = function (jobName, jobConfig, taskConfig) {
+    return taskConfig.command
 }

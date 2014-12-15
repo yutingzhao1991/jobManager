@@ -96,6 +96,10 @@ Change Log:
 
 - 0.0.3 : support view log
 
+- 0.0.4 : fix alerter bug
+
+- 0.0.5 : add jobName and jobConfig to plugins
+
 
 Plugin:
 --------

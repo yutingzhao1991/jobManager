@@ -1,9 +1,9 @@
 //
 // A base plugin for demo
-// config: {
+// taskConfig: {
 //  "file": "your python file"
 // }
 
-module.exports = function (config) {
-    return 'python ' + config.file
+module.exports = function (jobName, jobConfig, taskConfig) {
+    return 'python ' + taskConfig.file
 }
