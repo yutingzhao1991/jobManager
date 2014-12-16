@@ -8,10 +8,7 @@ var when = require('when')
 var alerter = require('./alerter')
 var config = require('../config.json')
 
-var LAST_UPDATE_END = true
 var LOG_DIR = __dirname + '/../_jobs'
-
-var jobsConfig = {}
 
 var checkPidAlive = function (pid) {
     try {
@@ -105,7 +102,7 @@ var updateJob = function (jobName, detail) {
     return promise
 }
 
-var updateStatus = function () {
+var updateStatus = function (updateStatus) {
     var promise = when.promise(function (resolve, reject, notify) {
         console.log('start update startus')
         // this is a bkend process, we can use sync api
@@ -139,7 +136,7 @@ var updateStatus = function () {
     return promise
 }
 
-var shouldStartJob = function(job, jobsMap) {
+var shouldStartJob = function(job, jobsMap, jobsConfig) {
     console.log('check job ', job.name)
     if (job.status != 'waiting' && job.status != 'success') {
         //console.log('status false')
@@ -170,7 +167,7 @@ var shouldStartJob = function(job, jobsMap) {
     return allDepReady
 }
 
-var checkJobs = function () {
+var checkJobs = function (jobsConfig) {
     console.log('check jobs should start a new partition')
     var promise = when.promise(function (resolve, reject, notify) {
         jobUtil.getAllJobs().then(function (jobs) {
@@ -183,7 +180,7 @@ var checkJobs = function () {
             var ps = []
             for (var i = 0; i < jobs.length; i ++) {
                 job = jobs[i]
-                if (shouldStartJob(job, jobsMap)) {
+                if (shouldStartJob(job, jobsMap, jobsConfig)) {
                     operation.startJob(job, job.current_partition_time)
                     job.status = 'processing'
                     ps.push(jobUtil.saveJob(job))
@@ -204,19 +201,31 @@ var checkJobs = function () {
 
 var runBackendProcess = function () {
     console.log('run backend process')
-    updateStatus().then(function () {
-        checkJobs().then(function (jobs) {
-            setTimeout(function () {
-                runBackendProcess()
-            }, 10000)
+    when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {
+        var configs = result[1]
+        var jobsConfig = {}
+        for (var i = 0; i < configs.length; i ++) {
+            jobsConfig[configs[i].jobName] = configs[i].config
+        }
+        updateStatus(jobsConfig).then(function () {
+            checkJobs(jobsConfig).then(function (jobs) {
+                setTimeout(function () {
+                    runBackendProcess()
+                }, 10000)
+            }, function (err) {
+                console.error('check jobs error')
+                console.log(err)
+            })
         }, function (err) {
-            console.error('check jobs error')
-            console.log(err)
+            console.error('bk server update job status failed', err)
         })
     }, function (err) {
-        console.error('bk server update job status failed', err)
+        console.log('utils read all jobs config error')
+        console.error(err)
     })
 }
+
+runBackendProcess()
 
 setInterval(function () {
     jobUtil.getAllJobs().then(function (jobs) {
@@ -224,13 +233,3 @@ setInterval(function () {
     })
 }, config.alertInterval * 1000)
 
-when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {
-    var jobs = result[1]
-    for (var i = 0; i < jobs.length; i ++) {
-        jobsConfig[jobs[i].jobName] = jobs[i].config
-    }
-    runBackendProcess()
-}, function (err) {
-    console.log('utils read all jobs config error')
-    console.error(err)
-})
