@@ -87,10 +87,10 @@ exports.checkAndAlertJobs = function (jobs) {
         var job = null, delayDuration = 0, nowPartitionTime = null, currentPartitionTime = null
         for (var i = 0; i < jobs.length; i ++) {
             job = jobs[i]
-            if (job.status == 'success') {
+            if (job.status == 'success' || job.status == 'stop') {
                 continue
             }
-            if (job.status == 'dead' || job.status == 'failed' || job.status == 'error' || job.status == 'stop') {
+            if (job.status == 'dead' || job.status == 'failed' || job.status == 'error') {
                 errorJobs.push({
                     job: job
                 })

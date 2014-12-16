@@ -136,24 +136,14 @@ var updateStatus = function (updateStatus) {
     return promise
 }
 
-var shouldStartJob = function(job, jobsMap, jobsConfig) {
-    console.log('check job ', job.name)
-    if (job.status != 'waiting' && job.status != 'success') {
-        //console.log('status false')
-        return false
-    }
-    var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
-    var nowPartition = utils.getPartitionByTime(job.frequency, new Date())
-    if (partition >= nowPartition) {
-        //console.log('now partition false')
-        return false
-    }
+var isDepReady = function(job, jobsMap, jobsConfig) {
     if (!jobsConfig[job.name]) {
         console.warn('not find job config of :', job.name)
         return false
     }
     var dependencies = jobsConfig[job.name].dependencies
     var allDepReady = true
+    var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
     var depJob, i, depPartion
     for (i = 0; i < dependencies.length; i ++) {
         depJob = jobsMap[dependencies[i].job]
@@ -167,6 +157,20 @@ var shouldStartJob = function(job, jobsMap, jobsConfig) {
     return allDepReady
 }
 
+var isTimeReady = function(job, jobsMap, jobsConfig) {
+    var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
+    var nowPartition = utils.getPartitionByTime(job.frequency, new Date())
+    if (partition >= nowPartition) {
+        //console.log('now partition false')
+        return false
+    } else {
+        return true
+    }
+}
+
+//
+// check should start a new partition
+//
 var checkJobs = function (jobsConfig) {
     console.log('check jobs should start a new partition')
     var promise = when.promise(function (resolve, reject, notify) {
@@ -180,10 +184,21 @@ var checkJobs = function (jobsConfig) {
             var ps = []
             for (var i = 0; i < jobs.length; i ++) {
                 job = jobs[i]
-                if (shouldStartJob(job, jobsMap, jobsConfig)) {
-                    operation.startJob(job, job.current_partition_time)
-                    job.status = 'processing'
-                    ps.push(jobUtil.saveJob(job))
+                if (job.status != 'waiting' && job.status != 'success') {
+                    continue
+                } else {
+                    if (isTimeReady(job, jobsMap, jobsConfig)) {
+                        if (isDepReady(job, jobsMap, jobsConfig)) {
+                            operation.startJob(job, job.current_partition_time)
+                            job.status = 'processing'
+                            ps.push(jobUtil.saveJob(job))
+                        } else {
+                            if (job.status != 'waiting') {
+                                job.status = 'waiting'
+                                ps.push(jobUtil.saveJob(job))
+                            }
+                        }
+                    }
                 }
             }
             when.all(ps).then(function () {

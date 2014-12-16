@@ -107,6 +107,12 @@ exports.getAllJobs = function () {
 
 exports.saveJob = function (job) {
     var promise = when.promise(function (resolve, reject, notify) {
+        if (job.status != 'error') {
+            job.message = null
+        }
+        if (job.status != 'processing') {
+            job.pid = null
+        }
         job.save(function (err) {
             if (err) {
                 reject(err)
