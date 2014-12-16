@@ -101,7 +101,7 @@ var updateJob = function (jobName, detail) {
     return promise
 }
 
-var updateStatus = function (updateStatus) {
+var updateStatus = function (jobsConfig) {
     var promise = when.promise(function (resolve, reject, notify) {
         // this is a bkend process, we can use sync api
         var files = fs.readdirSync(LOG_DIR)
@@ -116,11 +116,10 @@ var updateStatus = function (updateStatus) {
                 continue
             }
             var jobName = fileName.replace(/\.log$/, '')
-            var fileContent = "" + fs.readFileSync(LOG_DIR + '/' + fileName)
-            if (!fileContent) {
-                console.warn('file:', fileName, 'is empty')
+            if (!jobsConfig[jobName]) {
                 continue
             }
+            var fileContent = "" + fs.readFileSync(LOG_DIR + '/' + fileName)
             var logDetail = analyzeLog(fileContent)
             ps.push(updateJob(jobName, logDetail))
         }

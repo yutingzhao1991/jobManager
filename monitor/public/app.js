@@ -19,7 +19,16 @@ $(function () {
             window.open('/delete?job_name=' + name, '_self')
         }
     })
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+
+    var updatePage = function () {
+        if ($('#jm-auto-update').prop('checked')) {
+            location.reload()
+        }
+        setTimeout(updatePage, 5000)
+    }
+    setTimeout(updatePage, 5000)
 })
