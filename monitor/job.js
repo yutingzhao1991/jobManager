@@ -28,6 +28,7 @@ var initJob = function (jobInfo) {
                 resolve(job)
                 return
             }
+            console.log('add a new job: ', jobInfo.jobName)
             var newJob = new Job()
             // default start from 3 hours ago
             newJob.current_partition_time = new Date(Date.now() - 1000 * 60 * 60 * 3)
@@ -51,7 +52,6 @@ var initJob = function (jobInfo) {
 }
 
 var init = function () {
-    console.log('init jobs')
     var promise = when.promise(function (resolve, reject, notify) {
         utils.getAllJobsConfig().then(function (jobs) {
             var ps = []
@@ -107,18 +107,26 @@ exports.getAllJobs = function () {
 
 exports.saveJob = function (job) {
     var promise = when.promise(function (resolve, reject, notify) {
-        if (job.status != 'error') {
-            job.message = null
-        }
-        if (job.status != 'processing') {
-            job.pid = null
-        }
         job.save(function (err) {
             if (err) {
                 reject(err)
                 return
             }
             resolve(job)
+        })
+    })
+    return promise
+}
+
+exports.deleteJob = function (jobName) {
+    var promise = when.promise(function (resolve, reject, notify) {
+        Job.remove({name: jobName}, function (err) {
+            if (err) {
+                console.error(err)
+                reject(err)
+                return
+            }
+            resolve()
         })
     })
     return promise
@@ -145,8 +153,4 @@ exports.updateJob = function (jobName, newData) {
         })
     })
     return promise
-}
-
-exports.deleteJob = function (jobName, callback) {
-    // TODO
 }

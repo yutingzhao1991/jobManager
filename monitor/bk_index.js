@@ -34,7 +34,6 @@ var analyzeLog = function (content) {
 }
 
 var updateJob = function (jobName, detail) {
-    console.log('update job ', jobName)
     var promise = when.promise(function (resolve, reject, notify) {
         jobUtil.getJob(jobName).then(function (job) {
             if (!job || job.status != 'processing') {
@@ -104,7 +103,6 @@ var updateJob = function (jobName, detail) {
 
 var updateStatus = function (updateStatus) {
     var promise = when.promise(function (resolve, reject, notify) {
-        console.log('start update startus')
         // this is a bkend process, we can use sync api
         var files = fs.readdirSync(LOG_DIR)
         if (!files) {
@@ -124,7 +122,6 @@ var updateStatus = function (updateStatus) {
                 continue
             }
             var logDetail = analyzeLog(fileContent)
-            // console.log('get detail from log:', fileName, logDetail)
             ps.push(updateJob(jobName, logDetail))
         }
         when.all(ps).then(function () {
@@ -136,12 +133,8 @@ var updateStatus = function (updateStatus) {
     return promise
 }
 
-var isDepReady = function(job, jobsMap, jobsConfig) {
-    if (!jobsConfig[job.name]) {
-        console.warn('not find job config of :', job.name)
-        return false
-    }
-    var dependencies = jobsConfig[job.name].dependencies
+var isDepReady = function(job, jobsMap, jobConfig) {
+    var dependencies = jobConfig.dependencies
     var allDepReady = true
     var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
     var depJob, i, depPartion
@@ -157,11 +150,10 @@ var isDepReady = function(job, jobsMap, jobsConfig) {
     return allDepReady
 }
 
-var isTimeReady = function(job, jobsMap, jobsConfig) {
+var isTimeReady = function(job, jobsMap) {
     var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
     var nowPartition = utils.getPartitionByTime(job.frequency, new Date())
     if (partition >= nowPartition) {
-        //console.log('now partition false')
         return false
     } else {
         return true
@@ -172,7 +164,6 @@ var isTimeReady = function(job, jobsMap, jobsConfig) {
 // check should start a new partition
 //
 var checkJobs = function (jobsConfig) {
-    console.log('check jobs should start a new partition')
     var promise = when.promise(function (resolve, reject, notify) {
         jobUtil.getAllJobs().then(function (jobs) {
             var job
@@ -187,8 +178,13 @@ var checkJobs = function (jobsConfig) {
                 if (job.status != 'waiting' && job.status != 'success') {
                     continue
                 } else {
-                    if (isTimeReady(job, jobsMap, jobsConfig)) {
-                        if (isDepReady(job, jobsMap, jobsConfig)) {
+                    if (!jobsConfig[job.name]) {
+                        console.warn('not find job config of :', job.name)
+                        job.status = 'error'
+                        job.message = 'not find job config'
+                        ps.push(jobUtil.saveJob(job))
+                    } else if(isTimeReady(job, jobsMap)) {
+                        if (isDepReady(job, jobsMap, jobsConfig[job.name])) {
                             operation.startJob(job, job.current_partition_time)
                             job.status = 'processing'
                             ps.push(jobUtil.saveJob(job))
@@ -215,7 +211,7 @@ var checkJobs = function (jobsConfig) {
 }
 
 var runBackendProcess = function () {
-    console.log('run backend process')
+    console.log('bk process start')
     when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {
         var configs = result[1]
         var jobsConfig = {}

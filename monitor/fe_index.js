@@ -90,6 +90,15 @@ app.get('/stop', function (req, res) {
     })
 })
 
+app.get('/delete', function (req, res) {
+    var jobName = req.query.job_name
+    jobUtil.deleteJob(jobName).then(function () {
+        res.redirect('/')
+    }, function (err) {
+        res.redirect('error?msg=' + err)
+    })
+})
+
 app.get('/log', function (req, res) {
     var jobName = req.query.job_name
     fs.readFile(__dirname + '/../_jobs/' + jobName + '.log', function (err, data) {

@@ -13,4 +13,13 @@ $(function () {
             window.open('/stop?job_name=' + name, '_self')
         }
     })
+    $('.jm-delete').click(function () {
+        var name = $(this).data('name')
+        if (confirm('Are you sure to delete job : ' + name + '(you should remove the job config file first)')) {
+            window.open('/delete?job_name=' + name, '_self')
+        }
+    })
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 })

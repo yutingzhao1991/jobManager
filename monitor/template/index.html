@@ -32,7 +32,44 @@
           <td><%= formatDuration(job.latency) %></td>
           <td><%= formatDuration(job.average_processing_time) %></td>
           <td><%= formatDuration(job.average_latency) %></td>
-          <td><%= job.status %></td>
+          <td>
+            <%
+            switch (job.status) {
+              case 'success':
+            %>
+            <span class="label label-success"><%= job.status %></span>
+            <%
+              break
+              case 'failed':
+              case 'error':
+            %>
+            <span class="label label-danger" data-toggle="tooltip" data-placement="top" title="<%= job.message %>">
+              <%= job.status %>
+            </span>
+            <%
+              break
+              case 'stop':
+            %>
+            <span class="label label-default"><%= job.status %></span>
+            <%
+              break
+              case 'processing':
+            %>
+            <span class="label label-primary"><%= job.status %></span>
+            <%
+              break
+              case 'waiting':
+            %>
+            <span class="label label-warning"><%= job.status %></span>
+            <%
+              break
+              default:
+            %>
+            <span class="label label-warning"><%= job.info %></span>
+            <%
+            }
+            %>
+          </td>
           <td><%= job.pid || 'N/A' %></td>
           <td><%= job.frequency %></td>
           <td><%= formatTime(job.start_time) %></td>
@@ -41,6 +78,7 @@
             <div>
               <button class="btn btn-primary btn-xs jm-start" data-partition="<%= partition(job.frequency, job.current_partition_time) %>" data-name="<%= job.name %>">Start</button>
               <button class="btn btn-danger btn-xs jm-stop" data-name="<%= job.name %>">Stop</button>
+              <button class="btn btn-danger btn-xs jm-delete" data-name="<%= job.name %>">Delete</button>
               <a class="btn btn-default btn-xs" href="/log?job_name=<%= job.name %>">Log</a>
             </div>
           </td>
