@@ -6,7 +6,11 @@ cd _jobs
 _JOB_NAME=$1 # demo.a
 _PARTITION=$2 # 2014/10/15/20/0
 _DATE=$3 # 2014-10-15
-# TODO ADD MORE
+_YEAR=$4
+_MONTH=$5
+_SHORT_DATE=$6
+_HOUR=$7
+_QUARTER=$8
 
 PID=`ps aux | grep $_JOB_NAME.sh | grep -v grep | awk '{print $2}'`
 if [[ "$PID" != "" ]]; then
@@ -22,4 +26,4 @@ if [ -f $_JOB_NAME.log ]; then
     fi
     cp "$_JOB_NAME.log" "backup_logs/$_JOB_NAME/LOG_`date "+%Y-%m-%d %H:%M:%S"`.log"
 fi
-nohup sh $_JOB_NAME.sh $_PARTITION $_DATE > $_JOB_NAME.log &
+nohup sh $_JOB_NAME.sh $_PARTITION $_DATE $_YEAR $_MONTH $_SHORT_DATE $_HOUR $_QUARTER > $_JOB_NAME.log &

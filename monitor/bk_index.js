@@ -209,6 +209,21 @@ var checkJobs = function (jobsConfig) {
     return promise
 }
 
+var updateAndCheckJobs = function (jobsConfig) {
+    updateStatus(jobsConfig).then(function () {
+        return checkJobs(jobsConfig)
+    }, function (err) {
+        console.error('bk server update job status failed', err)
+    }).then(function (jobs) {
+        setTimeout(function () {
+            runBackendProcess()
+        }, 10000)
+    }, function (err) {
+        console.error('check jobs error')
+        console.log(err)
+    })
+}
+
 var runBackendProcess = function () {
     console.log('bk process start')
     when.all([jobUtil.init(), utils.getAllJobsConfig()]).then(function (result) {
@@ -217,18 +232,7 @@ var runBackendProcess = function () {
         for (var i = 0; i < configs.length; i ++) {
             jobsConfig[configs[i].jobName] = configs[i].config
         }
-        updateStatus(jobsConfig).then(function () {
-            checkJobs(jobsConfig).then(function (jobs) {
-                setTimeout(function () {
-                    runBackendProcess()
-                }, 10000)
-            }, function (err) {
-                console.error('check jobs error')
-                console.log(err)
-            })
-        }, function (err) {
-            console.error('bk server update job status failed', err)
-        })
+        updateAndCheckJobs(jobsConfig)
     }, function (err) {
         console.log('utils read all jobs config error')
         console.error(err)

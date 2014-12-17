@@ -103,6 +103,16 @@ Variable in your shell command can be used:
 
 2.$DATE # like 2014-12-12
 
+3.$YEAR # like 2014
+
+4.$MONTH # 0 - 11
+
+5.$SHORT_DATE # 1 - 31
+
+6.$HOUR # 0 - 23
+
+7.$QUARTER # 0 1 2 3
+
 
 Change Log:
 
@@ -115,6 +125,10 @@ Change Log:
 - 0.0.4 : fix alerter bug
 
 - 0.0.5 : add jobName and jobConfig to plugins
+
+- 0.0.6 : support delete job and auto update page
+
+- 0.0.7 : more variable
 
 
 Plugin:

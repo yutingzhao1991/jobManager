@@ -1,6 +1,6 @@
 {
   "name": "jobManager",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Manager and monitor your linux shell jobs.",
   "main": "index.js",
   "scripts": {

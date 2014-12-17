@@ -13,7 +13,13 @@ exports.startJob = function (job, partitionTime) {
     var sh = spawn('sh', [__dirname + '/start.sh',
         job.name,
         partition,
-        moment(partitionTime).format('YYYY-MM-DD')])
+        moment(partitionTime).format('YYYY-MM-DD'),
+        partitionTime.getFullYear(),
+        partitionTime.getMonth(),
+        partitionTime.getDate(),
+        partitionTime.getHours(),
+        Math.floor(partitionTime.getMinutes() / 15)])
+
     sh.stdout.on('data', function (data) {
         // console.log(data)
     })
