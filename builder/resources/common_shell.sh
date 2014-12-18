@@ -5,6 +5,7 @@
 
 JOB_NAME=
 JOB_COMMAND_LIST=
+RETRY_INTERVAL=60
 
 COMMAND_SEPARATOR=";"
 
@@ -19,11 +20,6 @@ function RunCommandUntilSuccess() {
     fi
 
     local _CMD=$1
-
-    local _RETRY_INTERVAL=60
-    if [ $# -ge 2 ]; then
-        _RETRY_INTERVAL=$2
-    fi
 
     local _ERROR_MSG=
     if [ $# -ge 3 ]; then
@@ -41,8 +37,8 @@ function RunCommandUntilSuccess() {
                 echo "$_ERROR_MSG"
             fi
 
-            echo `date +%Y-%m-%d-%T`" Failed to run command: '$_CMD'. Retry in $_RETRY_INTERVAL seconds."
-            sleep $_RETRY_INTERVAL
+            echo `date +%Y-%m-%d-%T`" Failed to run command: '$_CMD'. Retry in $RETRY_INTERVAL seconds."
+            sleep $RETRY_INTERVAL
         fi
     done
 }

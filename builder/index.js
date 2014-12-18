@@ -14,6 +14,16 @@ if (!JOB_TEMPLATE) {
     return
 }
 
+var getRetryInterval = function (frequency) {
+    if (frequency == 'quarterly') {
+        return 60
+    }
+    if (frequency == 'hourly') {
+        return 600
+    }
+    return 3600
+}
+
 var buildJob = function (jobName, config) {
     console.log('start build job : ', jobName, ' with config ', JSON.stringify(config))
     var tasks = config.tasks
@@ -33,6 +43,7 @@ var buildJob = function (jobName, config) {
         .replace('{job_name}', jobName)
         .replace('{job_command_list}', jobCommandList.join(';').replace(/\"/g, '\\\"'))
         .replace('{job_command_list_retry_flag}', '(' + jobCommandListRetryFlag.join(' ') + ')')
+        .replace('{retry_interval}', getRetryInterval(config.frequency))
     fs.writeFile(__dirname + '/../_jobs/' + jobName + '.sh', jobShell, function (err) {
         if (err) {
             console.error('write job ', jobName, ' failed. ', err)

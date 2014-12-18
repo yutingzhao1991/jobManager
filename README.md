@@ -24,15 +24,15 @@ Dependencies:
 Usage:
 ------
 
-1:Run 'npm install' to install necessary NodeJS packages.
+1:Run `npm install` to install necessary NodeJS packages.
 
 2:Copy config.default.json to config.json and configurate your MongoDB setting.
 
 2:Writing your own job config in jobs folder refer to demo config demo.a.json, json file name is your job name.
 
-3:Run sh build.sh to init jobs.
+3:Run `npm run build` to init jobs.
 
-4:Run node monitor/bk_index.js to start backend log scaner and run node monitor/fe_index.js to start monitor web server.
+4:Run `npm run bk` to start backend log scaner and run `npm run fe` to start monitor web server.
 
 5:Then you can visitor 127.0.0.1:[port] to manager your jobs.
 
@@ -48,7 +48,7 @@ Job config:
     }],
     "tasks": [{
         "plugin": "base",
-        "retry": "false", // is auto retry, default is false, is it is true job this task will retry untill success
+        "retry": false, // is auto retry, default is false, is it is true job this task will retry untill success
         "config": { // you can get this config in you plugin
             "command": "echo \"test demo a\""
         }
@@ -115,6 +115,7 @@ Variable in your shell command can be used:
 
 
 Change Log:
+----------
 
 - 0.0.1 : first version release
 
@@ -129,6 +130,8 @@ Change Log:
 - 0.0.6 : support delete job and auto update page
 
 - 0.0.7 : more variable
+
+- 0.0.8 : log view update
 
 
 Plugin:

@@ -1,11 +1,14 @@
 {
   "name": "jobManager",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Manager and monitor your linux shell jobs.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo \"use node monitor/fe_index.js and node monitor/bk_index.js\""
+    "start": "echo \"USE 'npm run bk' AND 'npm run fe'\"",
+    "bk": "node monitor/bk_index.js",
+    "fe": "node monitor/fe_index.js",
+    "build": "sh build.sh"
   },
   "repository": {
     "type": "git",

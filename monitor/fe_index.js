@@ -16,6 +16,8 @@ var when = require('when')
 var moment = require('moment')
 var fs = require('fs')
 
+var MAX_LOG_LENGTH = 10000
+
 // static files forder
 var staticDir = path.join(__dirname, 'public');
 app.use('/public', express.static(staticDir));
@@ -106,9 +108,17 @@ app.get('/log', function (req, res) {
             res.redirect('error?msg=' + err)
             return
         }
+        var logText = "" + data
+        var tailLog = null
+        if (logText.length > MAX_LOG_LENGTH) {
+            // log too long cut text in middle
+            tailLog = logText.substr(- MAX_LOG_LENGTH, MAX_LOG_LENGTH / 2)
+            logText = logText.substr(0, MAX_LOG_LENGTH / 2)
+        }
         res.render('log', {
             job_name: jobName,
-            log: "" + data
+            head: logText,
+            tail: tailLog
         })
     })
 })
