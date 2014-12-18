@@ -77,6 +77,7 @@ Project config:
 ```
 
 Job status:
+----------
 
 - waiting : waiting dependencies job ready or bk_index start the job
 
@@ -132,6 +133,8 @@ Change Log:
 - 0.0.7 : more variable
 
 - 0.0.8 : log view update
+
+- 0.0.9 : all output put to log file
 
 
 Plugin:

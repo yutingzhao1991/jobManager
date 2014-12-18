@@ -26,4 +26,4 @@ if [ -f $_JOB_NAME.log ]; then
     fi
     cp "$_JOB_NAME.log" "backup_logs/$_JOB_NAME/LOG_`date "+%Y-%m-%d %H:%M:%S"`.log"
 fi
-nohup sh $_JOB_NAME.sh $_PARTITION $_DATE $_YEAR $_MONTH $_SHORT_DATE $_HOUR $_QUARTER > $_JOB_NAME.log &
+nohup sh $_JOB_NAME.sh $_PARTITION $_DATE $_YEAR $_MONTH $_SHORT_DATE $_HOUR $_QUARTER > $_JOB_NAME.log 2>&1 &
