@@ -19,6 +19,9 @@ var getRetryInterval = function (frequency) {
         return 60
     }
     if (frequency == 'hourly') {
+        return 300
+    }
+    if (frequency == 'daily') {
         return 600
     }
     return 3600

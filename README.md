@@ -136,6 +136,8 @@ Change Log:
 
 - 0.0.9 : all output put to log file
 
+- 0.0.10 : auto update job config to mongodb
+
 
 Plugin:
 --------

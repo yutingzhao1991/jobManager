@@ -33,20 +33,20 @@ var analyzeLog = function (content) {
     return detail
 }
 
-var updateJob = function (jobName, detail) {
+var updateJob = function (jobName, detail, jobConfig) {
     var promise = when.promise(function (resolve, reject, notify) {
         jobUtil.getJob(jobName).then(function (job) {
-            if (!job || job.status != 'processing') {
+            if (!job) {
                 // job not exist or job was waiting, did not need update
                 // TODO: get all processiong job and then to read the logfile
                 resolve()
                 return
             }
-            if (!detail['PARTITION']) {
-                job.status = 'error'
-                job.message = 'not find partition in log file'
-                console.error(job.message)
-            } else {
+            // update job with job config
+            job.author = jobConfig.author
+            job.frequency = jobConfig.frequency
+            if (job.status == 'processing' && detail['PARTITION']) {
+                // job is processing, update job with detail in log
                 var currentPartitionTime = job.current_partition_time
                 if (!currentPartitionTime) {
                     console.warn('current partition time is null')
@@ -94,8 +94,8 @@ var updateJob = function (jobName, detail) {
                 resolve(job)
             })
         }, function (err) {
-            console.warn('not find job of log file ',  jobName)
-            reject(err)
+            console.warn('not find job of log file ',  jobName, err)
+            resolve()
         })
     })
     return promise
@@ -119,9 +119,10 @@ var updateStatus = function (jobsConfig) {
             if (!jobsConfig[jobName]) {
                 continue
             }
+            var jobConfig = jobsConfig[jobName]
             var fileContent = "" + fs.readFileSync(LOG_DIR + '/' + fileName)
             var logDetail = analyzeLog(fileContent)
-            ps.push(updateJob(jobName, logDetail))
+            ps.push(updateJob(jobName, logDetail, jobConfig))
         }
         when.all(ps).then(function () {
             resolve()

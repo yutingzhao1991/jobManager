@@ -112,7 +112,7 @@ app.get('/log', function (req, res) {
         var tailLog = null
         if (logText.length > MAX_LOG_LENGTH) {
             // log too long cut text in middle
-            tailLog = logText.substr(- MAX_LOG_LENGTH, MAX_LOG_LENGTH / 2)
+            tailLog = logText.substr(- MAX_LOG_LENGTH / 2, MAX_LOG_LENGTH / 2)
             logText = logText.substr(0, MAX_LOG_LENGTH / 2)
         }
         res.render('log', {
