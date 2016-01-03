@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "svn",
-    "url": "https://scm.qiyi.domain:18080/svn/cas/trunk/ads/bi/jobs/job_manager"
+    "url": "https://github.com/yutingzhao1991/jobManager.git"
   },
   "keywords": [
     "jobs",
