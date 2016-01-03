@@ -68,8 +68,12 @@ function ExecuteJob() {
         else
             eval $_CMD
         fi
-        if [ $? -eq 0 ]; then
+        return_code=$?
+        if [ $return_code -eq 0 ]; then
             time_echo "Success to run command: '$_CMD'."
+        elif [ $return_code -eq 9 ]; then
+            time_echo "Job will be skipped because of command $_CMD return code is 9."
+            break
         else
             time_echo "{{FAILED_TASK::$_CMD}}"
             time_echo "Failed to run command: '$_CMD'."

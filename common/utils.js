@@ -72,6 +72,9 @@ exports.getTimeByPartition = function (frequency, partition) {
 }
 
 var getPartitionByTime = function (frequency, time) {
+    if (!time) {
+        return 'N/A'
+    }
     switch(frequency) {
         case 'monthly':
             return moment(time).endOf('month').format('YYYY/MM/DD')
@@ -89,6 +92,9 @@ var getPartitionByTime = function (frequency, time) {
 exports.getPartitionByTime = getPartitionByTime
 
 var getPartitionTimeByTime = function (frequency, time) {
+    if (!time) {
+        return 'N/A'
+    }
     var partitionTime = moment(time)
     switch(frequency) {
         case 'monthly':

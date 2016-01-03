@@ -152,7 +152,7 @@ var isDepReady = function(job, jobsMap, jobConfig) {
 
 var isTimeReady = function(job, jobsMap) {
     var partition = utils.getPartitionByTime(job.frequency, job.current_partition_time)
-    var nowPartition = utils.getPartitionByTime(job.frequency, new Date())
+    var nowPartition = utils.getPartitionByTime(job.frequency, job.end_partition_time || new Date())
     if (partition >= nowPartition) {
         return false
     } else {
@@ -247,4 +247,3 @@ setInterval(function () {
         alerter.checkAndAlertJobs(jobs)
     })
 }, config.alertInterval * 1000)
-

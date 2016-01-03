@@ -43,7 +43,9 @@ var buildJob = function (jobName, config) {
         }
     }
     var jobShell = JOB_TEMPLATE
+        .replace('{prod_root}', __dirname.replace(/builder$/, '_jobs'))
         .replace('{job_name}', jobName)
+        .replace('{frequency}', config.frequency.toUpperCase())
         .replace('{job_command_list}', jobCommandList.join(';').replace(/\"/g, '\\\"'))
         .replace('{job_command_list_retry_flag}', '(' + jobCommandListRetryFlag.join(' ') + ')')
         .replace('{retry_interval}', getRetryInterval(config.frequency))

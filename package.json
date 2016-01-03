@@ -1,6 +1,6 @@
 {
   "name": "jobManager",
-  "version": "0.0.10",
+  "version": "1.0.1",
   "description": "Manager and monitor your linux shell jobs.",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,8 @@
     "build": "sh build.sh"
   },
   "repository": {
-    "type": "git",
-    "url": "https://github.com/yutingzhao1991/jobManager.git"
+    "type": "svn",
+    "url": "https://scm.qiyi.domain:18080/svn/cas/trunk/ads/bi/jobs/job_manager"
   },
   "keywords": [
     "jobs",
@@ -20,12 +20,7 @@
     "monitor",
     "shell"
   ],
-  "author": "yutingzhao.com",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/yutingzhao1991/jobManager/issues"
-  },
-  "homepage": "https://github.com/yutingzhao1991/jobManager",
+  "author": "Tingzhao Yu",
   "dependencies": {
     "ejs": "^1.0.0",
     "ejs-mate": "^2.1.0",

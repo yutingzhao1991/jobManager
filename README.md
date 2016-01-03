@@ -4,11 +4,6 @@ jobManager
 A program to manager and monitor your linux shell jobs ( In fact, your job is a shell command ), based on NodeJS.
 
 
-![monitor](https://cloud.githubusercontent.com/assets/1061968/5429930/c320770a-843a-11e4-8ca4-5c88bf25a978.png)
-
-![logviewer](https://cloud.githubusercontent.com/assets/1061968/5429922/afa34c16-843a-11e4-986e-b7f1154670f2.png)
-
-
 Dependencies:
 -------------
 
@@ -26,7 +21,7 @@ Usage:
 
 1:Run `npm install` to install necessary NodeJS packages.
 
-2:Copy config.default.json to config.json and configurate your MongoDB setting.
+2:Copy config.default.json to config.json and configurate your MongoDB setting. Move jobs.demo to jobs and plugins.demo to plugins.
 
 2:Writing your own job config in jobs folder refer to demo config demo.a.json, json file name is your job name.
 
@@ -114,29 +109,18 @@ Variable in your shell command can be used:
 
 7.$QUARTER # 0 1 2 3
 
+8.$PROD_ROOT root directory which job shell running
+
+9.$JOB_NAME name of this job
+
+10.$FREQUENCY frequency of this job, like : HOURLY, QUARTERLY
+
 
 Change Log:
 ----------
 
-- 0.0.1 : first version release
-
-- 0.0.2 : support email alert and auto retry task
-
-- 0.0.3 : support view log
-
-- 0.0.4 : fix alerter bug
-
-- 0.0.5 : add jobName and jobConfig to plugins
-
-- 0.0.6 : support delete job and auto update page
-
-- 0.0.7 : more variable
-
-- 0.0.8 : log view update
-
-- 0.0.9 : all output put to log file
-
-- 0.0.10 : auto update job config to mongodb
+- 1.0.0 : 1.0.0 release
+- 1.0.1 : support end partition, support view config
 
 
 Plugin:

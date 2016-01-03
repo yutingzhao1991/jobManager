@@ -14,6 +14,7 @@
         <tr>
           <th>name</th>
           <th>current_partition</th>
+          <th>end_partition</th>
           <th>average processing time</th>
           <!--
           <th>latency</th>
@@ -32,6 +33,7 @@
         <tr>
           <td><%= job.name %></td>
           <td><%= partition(job.frequency, job.current_partition_time) %></td>
+          <td><button class="btn btn-xs btn-default jm-endtime" data-partition="<%= partition(job.frequency, job.current_partition_time) %>" data-name="<%= job.name %>"><%= partition(job.frequency, job.end_partition_time) %></button></td>
           <td><%= formatDuration(job.average_processing_time) %></td>
           <!--
           <td><%= formatDuration(job.latency) %></td>
@@ -85,6 +87,7 @@
               <button class="btn btn-danger btn-xs jm-stop" data-name="<%= job.name %>">Stop</button>
               <button class="btn btn-danger btn-xs jm-delete" data-name="<%= job.name %>">Delete</button>
               <a class="btn btn-default btn-xs" href="/log?job_name=<%= job.name %>">Log</a>
+              <a class="btn btn-default btn-xs" href="/config?job_name=<%= job.name %>">Config</a>
             </div>
           </td>
         </tr>

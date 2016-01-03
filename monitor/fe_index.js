@@ -77,6 +77,27 @@ app.get('/start', function (req, res) {
     })
 })
 
+app.get('/upendtime', function (req, res) {
+    var jobName = req.query.job_name
+    var endPartition = req.query.partition
+    console.log('update end time of job: ', jobName, ' partition', endPartition)
+    jobUtil.getJob(jobName).then(function (job) {
+        if (endPartition && !utils.isPartitionLegal(job.frequency, endPartition)) {
+            res.redirect('error?msg=partition is illegal')
+            return
+        }
+        if (endPartition) {
+            job.end_partition_time = utils.getTimeByPartition(job.frequency, endPartition)
+        }
+        jobUtil.saveJob(job).then(function () {
+            res.redirect('/')
+        }, function (err) {
+            res.redirect('error?msg=' + err)
+        })
+    }, function (err) {
+        res.redirect('error?msg=' + err)
+    })
+})
 app.get('/stop', function (req, res) {
     var jobName = req.query.job_name
     jobUtil.getJob(jobName).then(function (job) {
@@ -116,6 +137,30 @@ app.get('/log', function (req, res) {
             logText = logText.substr(0, MAX_LOG_LENGTH / 2)
         }
         res.render('log', {
+            title: 'Log',
+            job_name: jobName,
+            head: logText,
+            tail: tailLog
+        })
+    })
+})
+
+app.get('/config', function (req, res) {
+    var jobName = req.query.job_name
+    fs.readFile(__dirname + '/../jobs/' + jobName + '.json', function (err, data) {
+        if (err) {
+            res.redirect('error?msg=' + err)
+            return
+        }
+        var logText = "" + data
+        var tailLog = null
+        if (logText.length > MAX_LOG_LENGTH) {
+            // log too long cut text in middle
+            tailLog = logText.substr(- MAX_LOG_LENGTH / 2, MAX_LOG_LENGTH / 2)
+            logText = logText.substr(0, MAX_LOG_LENGTH / 2)
+        }
+        res.render('log', {
+            title: 'Config',
             job_name: jobName,
             head: logText,
             tail: tailLog

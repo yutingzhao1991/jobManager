@@ -2,9 +2,9 @@ $(function () {
     $('.jm-start').click(function () {
         var partition = $(this).data('partition')
         var name = $(this).data('name')
-        var partition = prompt('Please input start partition:', partition)
+        var start_partition = prompt('Please input start partition:', partition)
         if (partition) {
-            window.open('/start?job_name=' + name + '&partition=' + partition, '_self')
+            window.open('/start?job_name=' + name + '&partition=' + start_partition, '_self')
         }
     })
     $('.jm-stop').click(function () {
@@ -17,6 +17,14 @@ $(function () {
         var name = $(this).data('name')
         if (confirm('Are you sure to delete job : ' + name + '(you should remove the job config file first)')) {
             window.open('/delete?job_name=' + name, '_self')
+        }
+    })
+    $('.jm-endtime').click(function () {
+        var partition = $(this).data('partition')
+        var name = $(this).data('name')
+        var end_partition = prompt('Please input end partition:', partition)
+        if (partition) {
+            window.open('/upendtime?job_name=' + name + '&partition=' + end_partition, '_self')
         }
     })
 
